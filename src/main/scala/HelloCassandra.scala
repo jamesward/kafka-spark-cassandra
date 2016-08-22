@@ -11,6 +11,8 @@ object HelloCassandra extends App {
 
   session.execute("CREATE TABLE IF NOT EXISTS demo.foo (id uuid PRIMARY KEY, name text);")
 
+  session.execute("CREATE TABLE IF NOT EXISTS demo.rand_ints (job_id int, count int, rand_int int, PRIMARY KEY(job_id, count) );")
+
   session.execute(s"INSERT INTO demo.foo (id, name) VALUES (${UUID.randomUUID().toString}, 'bar');")
 
   val results = session.execute("SELECT * FROM demo.foo;")

@@ -2,15 +2,26 @@ name := "kafka-spark-cassandra"
 
 scalaVersion := "2.11.8"
 
+
+val kafkaVersion = "0.10.0.1"
+val akkaStreamKafkaVersion = "0.11-M4"
+val cassandraVersion = "3.7"
+val sparkVersion = "2.0.0"
+val sparkCassandraConnectorVersion = "2.0.0-M1"
+val http4s = "0.14.2a"
+
 libraryDependencies ++= Seq(
-  "org.apache.kafka" %% "kafka" % "0.10.0.1",
-  "com.typesafe.akka" %% "akka-stream-kafka" % "0.11-M4",
-  "org.apache.cassandra" % "cassandra-all" % "3.7",
-  "org.apache.spark" %% "spark-core" % "1.6.2",
-  "org.apache.spark" %% "spark-sql" % "1.6.2",
-  "com.datastax.spark" %% "spark-cassandra-connector" % "1.6.0",
-  "org.http4s"       %% "http4s-dsl"          % "0.14.2a",
-  "org.http4s"       %% "http4s-blaze-server" % "0.14.2a",
+  // kafka is imported as a dependency of spark-streaming-kafka and this version conflicts with that version
+  // "org.apache.kafka" %% "kafka" % kafkaVersion,
+  "com.typesafe.akka" %% "akka-stream-kafka" % akkaStreamKafkaVersion,
+  "org.apache.cassandra" % "cassandra-all" % cassandraVersion,
+  "org.apache.spark" %% "spark-core" % sparkVersion,
+  "org.apache.spark" %% "spark-sql" % sparkVersion,
+  "org.apache.spark" %% "spark-streaming" % sparkVersion,
+  "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion,
+  "com.datastax.spark" %% "spark-cassandra-connector" % sparkCassandraConnectorVersion,
+  "org.http4s"       %% "http4s-dsl"          % http4s,
+  "org.http4s"       %% "http4s-blaze-server" % http4s,
   "org.scalatest"    %% "scalatest"           % "2.2.6" % "test"
 )
 
