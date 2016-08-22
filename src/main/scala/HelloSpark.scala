@@ -1,5 +1,5 @@
-import org.apache.spark.{SparkContext, SparkConf}
 import com.datastax.spark.connector._
+import org.apache.spark.{SparkConf, SparkContext}
 
 object HelloSpark extends App {
 

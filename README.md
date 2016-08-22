@@ -27,6 +27,8 @@ Run `HelloSparkStreaming`:
 
     ./sbt "runMain HelloSparkStreaming"    
 
+Checkout the Spark UI: [http://localhost:4040](http://localhost:4040)
+
 Run `HelloHttp4s`:
 
     ./sbt "runMain HelloHttp4s"
