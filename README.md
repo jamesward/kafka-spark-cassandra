@@ -22,6 +22,10 @@ Run `HelloCassandra`:
 Run `HelloSpark`:
 
     ./sbt "runMain HelloSpark"
+    
+Run `HelloSparkStreaming`:
+
+    ./sbt "runMain HelloSparkStreaming"    
 
 Run `HelloHttp4s`:
 
