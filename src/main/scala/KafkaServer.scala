@@ -33,8 +33,7 @@ object KafkaServer extends App {
   kafkaProperties.put("zookeeper.connect", "localhost:2181")
   kafkaProperties.put("broker.id", "1")
 
-  // val kafkaConfig = KafkaConfig.fromProps(kafkaProperties)
-  val kafkaConfig =  new KafkaConfig(kafkaProperties)
+  val kafkaConfig = KafkaConfig.fromProps(kafkaProperties)
 
   val kafka = new KafkaServerStartable(kafkaConfig)
 
