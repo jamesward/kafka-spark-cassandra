@@ -19,8 +19,7 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-streaming" % sparkVersion,
   "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion,
   "com.datastax.spark" %% "spark-cassandra-connector" % sparkCassandraConnectorVersion,
-  "org.http4s"       %% "http4s-dsl"          % http4s,
-  "org.http4s"       %% "http4s-blaze-server" % http4s,
+  "com.typesafe.play" %% "play-netty-server" % "2.5.5",
   "org.scalatest"    %% "scalatest"           % "2.2.6" % "test"
 )
 
