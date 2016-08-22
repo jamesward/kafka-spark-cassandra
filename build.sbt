@@ -2,17 +2,16 @@ name := "kafka-spark-cassandra"
 
 scalaVersion := "2.11.8"
 
-
 val kafkaVersion = "0.10.0.1"
-val akkaStreamKafkaVersion = "0.11-M4"
+val akkaStreamKafkaVersion = "0.11-RC1"
 val cassandraVersion = "3.7"
 val sparkVersion = "2.0.0"
 val sparkCassandraConnectorVersion = "2.0.0-M1"
 val http4s = "0.14.2a"
 
 libraryDependencies ++= Seq(
-  // kafka is imported as a dependency of spark-streaming-kafka and this version conflicts with that version
-  // "org.apache.kafka" %% "kafka" % kafkaVersion,
+  "org.apache.kafka" %% "kafka" % kafkaVersion,
+  "org.apache.kafka" % "kafka-clients" % kafkaVersion,
   "com.typesafe.akka" %% "akka-stream-kafka" % akkaStreamKafkaVersion,
   "org.apache.cassandra" % "cassandra-all" % cassandraVersion,
   "org.apache.spark" %% "spark-core" % sparkVersion,

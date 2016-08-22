@@ -15,9 +15,11 @@ object KafkaServer extends App {
     override def getClientPortAddress: InetSocketAddress = new InetSocketAddress(2181)
   }
 
-  val zooKeeperServer = new ZooKeeperServerMain() {
+  class StoppableZooKeeperServerMain extends ZooKeeperServerMain {
     def stop(): Unit = shutdown()
   }
+
+  val zooKeeperServer = new StoppableZooKeeperServerMain()
 
   val zooKeeperConfig = new ServerConfig()
   zooKeeperConfig.readFrom(quorumConfiguration)
