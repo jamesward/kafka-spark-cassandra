@@ -32,6 +32,7 @@ object KafkaServer extends App {
   val kafkaProperties = new Properties()
   kafkaProperties.put("zookeeper.connect", "localhost:2181")
   kafkaProperties.put("broker.id", "1")
+  kafkaProperties.put("log.dirs", Files.createTempDirectory("kafka-logs").toString)
 
   val kafkaConfig = KafkaConfig.fromProps(kafkaProperties)
 
