@@ -19,7 +19,8 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-streaming" % sparkVersion,
   "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion,
   "com.datastax.spark" %% "spark-cassandra-connector" % sparkCassandraConnectorVersion,
-  "com.typesafe.play" %% "play-netty-server" % "2.5.5",
+  "com.typesafe.play" %% "play-netty-server" % "2.5.5"
+    exclude("com.fasterxml.jackson.core", "jackson-databind"),
   "org.scalatest"    %% "scalatest"           % "2.2.6" % "test"
 )
 

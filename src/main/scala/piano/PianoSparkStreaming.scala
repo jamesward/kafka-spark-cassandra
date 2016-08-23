@@ -49,7 +49,7 @@ object PianoSparkStreaming extends App {
     PianoNote(randClientId, consumerRecord.key, consumerRecord.value, noteCount.getAndIncrement())
   }
 
-  jobStream.saveToCassandra("demo", "rand_ints", AllColumns, cassandraWriteConf)
+  jobStream.saveToCassandra("demo", "song", AllColumns, cassandraWriteConf)
   jobStream.foreachRDD(_.toDF().show())
 
   streamingContext.start()
