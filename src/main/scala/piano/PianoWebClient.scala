@@ -42,7 +42,7 @@ object PianoWebClient extends App {
         produceKeyCodeMessage(songId.toInt, keyCode.toInt)
         Results.Ok("")
       }
-      case GET(p"/keycodes" ? q"clientId=$clientId" & q"songId=$songId") => Action {
+      case GET(p"/playback" ? q"clientId=$clientId" & q"songId=$songId") => Action {
         val song: PianoSong = PianoCassandraHelper.pianoCassandraHelper.getPianoSong(clientId.toInt, songId.toInt)
         Results.Ok(song.key_codes.mkString(","))
       }
