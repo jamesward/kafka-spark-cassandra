@@ -12,6 +12,7 @@ import com.typesafe.config.ConfigFactory
 import controllers.Assets
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.IntegerSerializer
+import play.api.libs.json.Json
 import play.api.mvc.{Action, Results}
 import play.api.routing.Router
 import play.api.routing.sird._
@@ -40,6 +41,10 @@ object PianoWebClient extends App {
       case GET(p"/keycodes" ? q"songId=$songId" & q"keyCode=$keyCode") => Action {
         produceKeyCodeMessage(songId.toInt, keyCode.toInt)
         Results.Ok("")
+      }
+      case GET(p"/keycodes" ? q"clientId=$clientId" & q"songId=$songId") => Action {
+        val song: PianoSong = PianoCassandraHelper.pianoCassandraHelper.getPianoSong(clientId.toInt, songId.toInt)
+        Results.Ok(song.key_codes.mkString(","))
       }
     }
   }

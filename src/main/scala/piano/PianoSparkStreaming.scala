@@ -1,9 +1,8 @@
 package piano
 
-import java.util.concurrent.atomic.AtomicInteger
 
 import com.datastax.driver.core.ConsistencyLevel
-import com.datastax.spark.connector.AllColumns
+import com.datastax.spark.connector.{AllColumns, ColumnName, SomeColumns}
 import com.datastax.spark.connector.streaming._
 import com.datastax.spark.connector.writer.WriteConf
 import org.apache.kafka.common.serialization.IntegerDeserializer
@@ -14,7 +13,7 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
 
 import scala.util.Random
 
-case class PianoNote(client_id: Int, song_id: Int, key_code: Int, note_count:Int)
+
 
 object PianoSparkStreaming extends App {
 
@@ -42,14 +41,13 @@ object PianoSparkStreaming extends App {
 
   val cassandraWriteConf = WriteConf.fromSparkConf(conf).copy(consistencyLevel = ConsistencyLevel.ONE)
 
-
-  val noteCount = new AtomicInteger
-
   val jobStream = rawKafkaStream.map { consumerRecord =>
-    PianoNote(randClientId, consumerRecord.key, consumerRecord.value, noteCount.getAndIncrement())
+    PianoSong(randClientId, consumerRecord.key, Seq(consumerRecord.value))
   }
 
-  jobStream.saveToCassandra("demo", "song", AllColumns, cassandraWriteConf)
+
+  val columnMapping = SomeColumns("client_id", "song_id", ColumnName("key_codes").append)
+  jobStream.saveToCassandra("demo", "song", columnMapping, cassandraWriteConf)
   jobStream.foreachRDD(_.toDF().show())
 
   streamingContext.start()
