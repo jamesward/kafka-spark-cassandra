@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8>
+    <title>HTML5 JavaScript Piano</title>
+    <link rel="stylesheet" type="text/css" href="/lib/javascript-piano/piano.css"/>
+    <style>
+        body {
+            text-align: center;
+        }
+        #piano canvas {
+            display: none;
+        }
+        #recordStop {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<button id="recordStop">Record</button>
+<div id="content">
+    <div id="content-inner">
+        <div id="piano">
+        </div>
+    </div>
+</div>
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/javascript-piano/audio.js"></script>
+<script src="/lib/javascript-piano/piano.js"></script>
+<script>
+    $(function() {
+        var piano = $('#piano');
+
+        var songId = Math.floor(Math.random()*11);
+
+        var playingInterval = null;
+
+        var recordingInterval = null;
+
+        var keyPlayed = null;
+
+        $('#recordStop').click(function() {
+            if ($(this).text() == "Record") {
+                $(this).text("Stop");
+                recordingInterval = setInterval(function() {
+                    ws.send(JSON.stringify({songId: songId, keyCode: keyPlayed}));
+                    keyPlayed = null;
+                }, 100);
+            }
+            else {
+                clearInterval(recordingInterval);
+                $(this).text("Record");
+            }
+        });
+
+        var ws = new WebSocket('ws://localhost:8080/ws');
+
+        ws.onmessage = function(event) {
+            var playing = JSON.parse(event.data);
+
+            console.log(playing);
+
+            playingInterval = setInterval(function() {
+                if (playing.length == 0) {
+                    clearInterval(playingInterval);
+                }
+
+                var keyCode = playing.shift().keyCode;
+                if (keyCode != null) {
+                    var key = piano.find('[data-key=' + keyCode + ']');
+                    key.mousedown();
+                }
+            }, 100);
+        };
+
+        piano.on('played-note.piano', function(event, keyCode) {
+            if (playingInterval == null) {
+                keyPlayed = keyCode;
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,7 +1,5 @@
 package piano
 
-import java.util.UUID
-
 import com.datastax.driver.core.Cluster
 
 object PianoCassandraSetup extends App {

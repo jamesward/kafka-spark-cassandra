@@ -19,8 +19,8 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-streaming" % sparkVersion,
   "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion,
   "com.datastax.spark" %% "spark-cassandra-connector" % sparkCassandraConnectorVersion,
-  "com.typesafe.play" %% "play-netty-server" % "2.5.5"
-    exclude("com.fasterxml.jackson.core", "jackson-databind"),
+  "com.typesafe.play" %% "play-netty-server" % "2.5.6" exclude("com.fasterxml.jackson.core", "jackson-databind"),
+  "org.webjars" % "javascript-piano" % "74c90339ad1d55a72a99fe6e33b35752c15d71c7",
   "org.scalatest"    %% "scalatest"           % "2.2.6" % "test"
 )
 
@@ -42,3 +42,7 @@ startCassandra := {
 }
 
 cancelable in Global := true
+
+enablePlugins(SbtWeb)
+
+(managedClasspath in Runtime) += (WebKeys.webJarsDirectory in Assets).value
