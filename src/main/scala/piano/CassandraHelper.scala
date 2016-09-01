@@ -1,5 +1,7 @@
 package piano
 
+import java.util
+
 import com.datastax.driver.core.{Cluster, ResultSet, Row, Session}
 
 import scala.collection.JavaConversions._
@@ -27,6 +29,14 @@ object CassandraHelper {
     val keyCodes = firstRow.getList(1, classOf[Integer]).toSeq.map(_.toInt)
 
     PianoSong(songId , keyCodes)
+  }
+
+  def getAllPianoSongs() = {
+    val songQuery: String = s"SELECT song_id FROM demo.song;"
+    val execute: ResultSet = withSession(_.execute(songQuery))
+    //execute.all loads the entire song list into memory.  For a production application an iterator should be used instead//
+    val songRows = collectionAsScalaIterable(execute.all())
+    songRows.map(_.getString(0))
   }
 }
 

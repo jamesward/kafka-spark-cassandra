@@ -28,8 +28,8 @@ object WebServer extends App {
       case GET(p"/") => Assets.at("/public", "index.html")
       case GET(p"/lib/$path*") => Assets.at("/lib", path)
       case GET(p"/songs") => Action.async {
-        // todo
-        Future.successful(Results.Ok(Json.arr("todo")))
+        val pianoSongs: Iterable[String] = CassandraHelper.getAllPianoSongs()
+        Future.successful(Results.Ok(Json.arr(pianoSongs)))
       }
       case GET(p"/play/$id") => Action {
         val song = CassandraHelper.getPianoSong(id)
