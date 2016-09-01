@@ -9,26 +9,33 @@ import scala.collection.JavaConversions._
 object CassandraHelper {
 
   val host = "127.0.0.1"
+  lazy val cassandraConnection = new CassandraHelper
 
   def withSession[T](f: Session => T): T = {
     withSession(false)(f)
   }
 
   def withSession[T](autoClose: Boolean)(f: Session => T): T = {
-    val cluster = Cluster.builder().addContactPoint(host).build()
-    val result = f(cluster.connect())
-    if (autoClose) cluster.close()
+    val result = f(cassandraConnection.session)
+    if (autoClose) cassandraConnection.close()
     result
+  }
+
+  def closeConnection() = {
+    cassandraConnection.close()
   }
 
   def getPianoSong(querySongId: String) = {
     val songQuery: String = s"SELECT * FROM demo.song where song_id = '$querySongId';"
     val execute: ResultSet = withSession(_.execute(songQuery))
-    val firstRow: Row = execute.one()
-    val songId: String = firstRow.getString(0)
-    val keyCodes = firstRow.getList(1, classOf[Integer]).toSeq.map(_.toInt)
+    if (execute.getAvailableWithoutFetching > 0) {
+      val firstRow: Row = execute.one()
+      val songId: String = firstRow.getString(0)
+      val keyCodes = firstRow.getList(1, classOf[Integer]).toSeq.map(_.toInt)
 
-    PianoSong(songId , keyCodes)
+      Some(PianoSong(songId, keyCodes))
+    }
+    else None
   }
 
   def getAllPianoSongs() = {
@@ -40,3 +47,10 @@ object CassandraHelper {
   }
 }
 
+class CassandraHelper {
+  val cluster = Cluster.builder().addContactPoint(CassandraHelper.host).build()
+  val session = cluster.connect()
+  def close() = {
+    if (!cluster.isClosed) cluster.close()
+  }
+}

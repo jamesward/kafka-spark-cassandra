@@ -32,8 +32,12 @@ object WebServer extends App {
         Future.successful(Results.Ok(Json.arr(pianoSongs)))
       }
       case GET(p"/play/$id") => Action {
-        val song = CassandraHelper.getPianoSong(id)
-        Results.Ok(Json.toJson(song))
+        val optSong = CassandraHelper.getPianoSong(id)
+        optSong match {
+          case Some(song) => Results.Ok(Json.toJson(song))
+          case _ => Results.NotFound
+        }
+
       }
       case GET(p"/ws") => WebSocket.accept[JsValue, JsValue] { _ =>
         val wsSink = kafkaHelper.sink().contramap[JsValue](KafkaHelper.fromJson(KafkaHelper.recordTopic))
@@ -45,5 +49,5 @@ object WebServer extends App {
   val server = components.server
   while (!Thread.currentThread.isInterrupted) {}
   server.stop()
-
+  CassandraHelper.closeConnection()
 }
