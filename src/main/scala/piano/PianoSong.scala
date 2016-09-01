@@ -1,3 +1,9 @@
 package piano
 
-case class PianoSong(client_id: Int, song_id: Int, key_codes: Seq[Int])
+import play.api.libs.json.Json
+
+case class PianoSong(song_id: String, key_codes: Seq[Int])
+
+object PianoSong {
+  implicit val writes = Json.writes[PianoSong]
+}

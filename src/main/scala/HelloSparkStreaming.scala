@@ -3,10 +3,10 @@ import com.datastax.spark.connector.AllColumns
 import com.datastax.spark.connector.streaming._
 import com.datastax.spark.connector.writer.WriteConf
 import org.apache.kafka.common.serialization.IntegerDeserializer
-import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.streaming.kafka010.{ConsumerStrategies, KafkaUtils, LocationStrategies}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
+import org.apache.spark.{SparkConf, SparkContext}
 
 import scala.util.Random
 
