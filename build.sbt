@@ -46,3 +46,5 @@ cancelable in Global := true
 enablePlugins(SbtWeb)
 
 (managedClasspath in Runtime) += (WebKeys.webJarsDirectory in Assets).value
+
+enablePlugins(AtomPlugin)

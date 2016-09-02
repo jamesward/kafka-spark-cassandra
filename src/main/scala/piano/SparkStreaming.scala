@@ -18,16 +18,7 @@ object SparkStreaming extends App {
 
   import session.implicits._
 
-  val ls = LocationStrategies.PreferBrokers
-  val cs = ConsumerStrategies.Subscribe[String, Integer](List(KafkaHelper.recordTopic), KafkaHelper.kafkaParams("group"))
-  val rawKafkaStream = KafkaUtils.createDirectStream[String, Integer](streamingContext, ls, cs)
 
-  val jobStream = rawKafkaStream.map(KafkaHelper.toPianoSong)
-
-  val columnMapping = SomeColumns("song_id", ColumnName("key_codes").append)
-  val cassandraWriteConf = WriteConf.fromSparkConf(conf).copy(consistencyLevel = ConsistencyLevel.ONE)
-  jobStream.saveToCassandra("demo", "song", columnMapping, cassandraWriteConf)
-  jobStream.foreachRDD(_.toDF().show())
 
   streamingContext.start()
   streamingContext.awaitTermination()
