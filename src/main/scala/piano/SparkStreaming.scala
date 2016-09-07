@@ -12,6 +12,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 object SparkStreaming extends App {
 
   val conf = new SparkConf(true).set("spark.cassandra.connection.host", CassandraHelper.host)
+  conf.set("spark.sql.warehouse.dir", "spark-warehouse")
   val context = new SparkContext("local", "PianoStreamingJob", conf)
   val streamingContext = new StreamingContext(context, Seconds(1))
   val session = SparkSession.builder.config(conf).getOrCreate()

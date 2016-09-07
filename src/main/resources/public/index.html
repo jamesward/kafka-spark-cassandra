@@ -62,6 +62,7 @@
         playingInterval = setInterval(function() {
             if (playing.length == 0) {
                 clearInterval(playingInterval);
+                playingInterval = null;
             }
 
             var keyCode = playing.shift();
