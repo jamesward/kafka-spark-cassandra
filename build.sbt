@@ -2,11 +2,13 @@ name := "kafka-spark-cassandra"
 
 scalaVersion := "2.11.8"
 
-val kafkaVersion = "0.10.0.1"
-val akkaStreamKafkaVersion = "0.11-RC1"
+val akkaStreamKafkaVersion = "0.13"
 val cassandraVersion = "3.7"
-val sparkVersion = "2.0.0"
-val sparkCassandraConnectorVersion = "2.0.0-M1"
+val kafkaVersion = "0.10.1.1"
+val playVersion = "2.5.12"
+val scalatestVersion = "2.2.6"
+val sparkVersion = "2.1.0"
+val sparkCassandraConnectorVersion = "2.0.0-M3"
 val http4s = "0.14.2a"
 
 libraryDependencies ++= Seq(
@@ -19,9 +21,11 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-streaming" % sparkVersion,
   "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion,
   "com.datastax.spark" %% "spark-cassandra-connector" % sparkCassandraConnectorVersion,
-  "com.typesafe.play" %% "play-netty-server" % "2.5.5",
-  "org.scalatest"    %% "scalatest"           % "2.2.6" % "test"
+  "com.typesafe.play" %% "play-netty-server" % playVersion,
+  "org.scalatest"    %% "scalatest"  % scalatestVersion % "test"
 )
+
+dependencyOverrides ++= Set("com.fasterxml.jackson.core" % "jackson-databind" % "2.6.6")
 
 excludeDependencies ++= Seq(
   "ch.qos.logback" % "logback-classic",
