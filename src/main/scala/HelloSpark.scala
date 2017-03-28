@@ -12,8 +12,8 @@ object HelloSpark extends App {
   println(s"\n### -> Table row count: ${rdd.count}\n")
   println(s"\n### -> First row: ${rdd.first}\n")
 
-  private val tableNames: String = rdd.map(_.getString("name")).collect().mkString(",")
-  println(s"\n### -> Table names: $tableNames\n")
+  private val fooNames: String = rdd.map(_.getString("name")).collect().mkString(",")
+  println(s"\n### -> FOO names: $fooNames\n")
 
   sc.stop()
 

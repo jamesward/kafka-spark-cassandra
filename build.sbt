@@ -8,7 +8,7 @@ val kafkaVersion = "0.10.1.1"
 val playVersion = "2.5.12"
 val scalatestVersion = "2.2.6"
 val sparkVersion = "2.1.0"
-val sparkCassandraConnectorVersion = "2.0.0-M3"
+val sparkCassandraConnectorVersion = "2.0.0"
 val http4s = "0.14.2a"
 
 libraryDependencies ++= Seq(
