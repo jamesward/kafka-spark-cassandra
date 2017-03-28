@@ -14,10 +14,6 @@ Start Cassandra:
 Run `HelloKafka`:
 
     ./sbt "runMain HelloKafka"
-    
-    If you have kafka on your local machine you can watch the messages from the command line with:
-    
-    bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic RandomNumbers --from-beginning
 
 Run `HelloCassandra`:
 
