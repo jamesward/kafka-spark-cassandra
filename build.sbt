@@ -10,4 +10,7 @@ lazy val cassandraServer = (project in file("cassandra-server")).settings(common
 
 lazy val clients = (project in file("clients")).settings(commonSettings: _*).enablePlugins(SbtWeb)
 
+TaskKey[Unit]("startCassandra") := (runMain in Compile in cassandraServer).toTask(" CassandraServer").value
+TaskKey[Unit]("startKafka") := (runMain in Compile in kafkaServer).toTask(" KafkaServer").value
+
 enablePlugins(AtomPlugin)
