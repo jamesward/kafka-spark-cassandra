@@ -37,7 +37,6 @@ object WebServer extends App {
           case Some(song) => Results.Ok(Json.toJson(song))
           case _ => Results.NotFound
         }
-
       }
       case GET(p"/ws") => WebSocket.accept[JsValue, JsValue] { _ =>
         val wsSink = kafkaHelper.sink().contramap[JsValue](KafkaHelper.fromJson(KafkaHelper.recordTopic))
