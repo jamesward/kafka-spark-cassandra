@@ -7,7 +7,7 @@ object HelloCassandra extends App {
   val cluster = Cluster.builder().addContactPoint("127.0.0.1").build()
   val session = cluster.connect()
 
-  session.execute("CREATE KEYSPACE IF NOT EXISTS demo WITH replication = {'class':'SimpleStrategy', 'replication_factor':3};")
+  session.execute("CREATE KEYSPACE IF NOT EXISTS demo WITH replication = {'class':'SimpleStrategy', 'replication_factor':1};")
 
   session.execute("CREATE TABLE IF NOT EXISTS demo.foo (id uuid PRIMARY KEY, name text);")
 
