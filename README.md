@@ -5,32 +5,32 @@ A self-contained sample app that combines Kafka, Spark, and Cassandra.
 
 Start Kafka:
 
-    ./sbt kafkaServer/run
+    ./sbt startKafka
 
 Start Cassandra:
 
-    ./sbt cassandraServer/run
+    ./sbt startCassandra
 
 Run `HelloKafka`:
 
-    ./sbt "clients/runMain HelloKafka"
+    ./sbt helloKafka
 
 Run `HelloCassandra`:
 
-    ./sbt "clients/runMain HelloCassandra"
+    ./sbt helloCassandra
     
 Run `HelloSpark`:
 
-    ./sbt "clients/runMain HelloSpark"
+    ./sbt helloSpark
     
 Run `HelloSparkStreaming` (requires `HelloSpark` to be running):
 
-    ./sbt "clients/runMain HelloSparkStreaming"
+    ./sbt helloSparkStreaming
 
 Checkout the Spark UI: [http://localhost:4040](http://localhost:4040)
 
 Run `HelloPlay`:
 
-    ./sbt "clients/runMain HelloPlay"
+    ./sbt helloPlay
 
 Check out the app: [http://localhost:8080](http://localhost:8080)
