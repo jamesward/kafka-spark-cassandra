@@ -27,6 +27,7 @@ object CassandraHelper {
 
   def getPianoSong(querySongId: String) = {
     val songQuery: String = s"SELECT * FROM demo.song where song_id = '$querySongId';"
+    println(songQuery)
     val execute: ResultSet = withSession(_.execute(songQuery))
     if (execute.getAvailableWithoutFetching > 0) {
       val firstRow: Row = execute.one()
