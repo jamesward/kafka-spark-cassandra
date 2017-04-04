@@ -16,7 +16,7 @@ object WebServer extends App {
 
   val components = new NettyServerComponents with BuiltInComponents {
 
-    def port() = sys.env.getOrElse("PORT", "8080").toInt
+    def port() = sys.env.getOrElse("PORT", "9000").toInt
 
     def mode() = if (configuration.getString("play.crypto.secret").contains("changeme")) Mode.Dev else Mode.Prod
 

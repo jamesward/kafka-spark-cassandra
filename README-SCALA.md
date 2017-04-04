@@ -13,24 +13,24 @@ Start Cassandra:
 
 Run `HelloKafka`:
 
-    ./sbt helloKafka
+    ./sbt sHelloKafka
 
 Run `HelloCassandra`:
 
-    ./sbt helloCassandra
+    ./sbt sHelloCassandra
     
 Run `HelloSpark`:
 
-    ./sbt helloSpark
+    ./sbt sHelloSpark
     
 Run `HelloSparkStreaming` (requires `HelloSpark` to be running):
 
-    ./sbt helloSparkStreaming
+    ./sbt sHelloSparkStreaming
 
 Checkout the Spark UI: [http://localhost:4040](http://localhost:4040)
 
 Run `HelloPlay`:
 
-    ./sbt helloPlay
+    ./sbt sHelloPlay
 
-Check out the app: [http://localhost:8080](http://localhost:8080)
+Check out the app: [http://localhost:9000](http://localhost:9000)
