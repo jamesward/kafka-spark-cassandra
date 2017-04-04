@@ -6,23 +6,19 @@ import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import models.PianoSong;
 
+import javax.inject.Singleton;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Singleton
 public class CassandraHelper {
 
     public static String HOST = "127.0.0.1";
     private Cluster cluster;
     private Session session;
 
-    private static CassandraHelper ourInstance = new CassandraHelper();
-
-    public static CassandraHelper getInstance() {
-        return ourInstance;
-    }
-
-    private CassandraHelper() {
+    public CassandraHelper() {
         this.cluster = Cluster.builder().addContactPoint("127.0.0.1").build();;
         this.session = cluster.connect();
     }

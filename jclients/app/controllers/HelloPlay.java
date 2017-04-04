@@ -1,6 +1,7 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import models.PianoSong;
 import play.libs.Json;
@@ -17,7 +18,8 @@ import java.util.Optional;
 @Singleton
 public class HelloPlay extends Controller {
 
-    CassandraHelper cassandraHelper = CassandraHelper.getInstance();
+    @Inject
+    private CassandraHelper cassandraHelper;
 
     public Result index() {
         return ok("Hello World");

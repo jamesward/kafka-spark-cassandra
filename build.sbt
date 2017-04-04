@@ -9,7 +9,8 @@ lazy val kafkaServer = (project in file("kafka-server")).settings(commonSettings
 lazy val cassandraServer = (project in file("cassandra-server")).settings(commonSettings: _*)
 
 lazy val sclients = (project in file("sclients")).settings(commonSettings: _*).enablePlugins(SbtWeb)
-lazy val jclients = (project in file("jclients")).settings(commonSettings: _*).enablePlugins(PlayJava)
+
+lazy val jclients = (project in file("jclients")).settings(commonSettings: _*).enablePlugins(PlayJava).disablePlugins(PlayLogback)
 
 TaskKey[Unit]("startCassandra") := (runMain in Compile in cassandraServer).toTask(" CassandraServer").value
 TaskKey[Unit]("startKafka") := (runMain in Compile in kafkaServer).toTask(" KafkaServer").value
