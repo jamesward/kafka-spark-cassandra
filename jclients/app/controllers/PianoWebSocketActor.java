@@ -27,6 +27,7 @@ public class PianoWebSocketActor extends UntypedActor {
         this.out = out;
     }
 
+    @Override
     public void onReceive(Object message) throws Exception {
         if (message instanceof JsonNode) {
             JsonNode parsedJson = (JsonNode) message;
@@ -35,5 +36,11 @@ public class PianoWebSocketActor extends UntypedActor {
             ProducerRecord<String, Integer> producerRecord = new ProducerRecord<>(KafkaHelper.TOPIC, songId, keyCode);
             producer.send(producerRecord);
         }
+    }
+
+    @Override
+    public void postStop() throws Exception {
+        producer.close();
+        super.postStop();
     }
 }

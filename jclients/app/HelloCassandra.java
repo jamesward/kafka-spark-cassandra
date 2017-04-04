@@ -9,7 +9,6 @@ public class HelloCassandra {
     public static void main(String[] args) {
         System.out.println("Running Hello Cassandra");
 
-
         Cluster cluster = Cluster.builder().addContactPoint("127.0.0.1").build();
         Session session = cluster.connect();
 

@@ -24,7 +24,7 @@ TaskKey[Unit]("sSetupPiano") := (runMain in Compile in sclients).toTask(" piano.
 TaskKey[Unit]("sPianoSparkStreaming") := (runMain in Compile in sclients).toTask(" piano.SparkStreaming").value
 TaskKey[Unit]("sStartWebServer") := (runMain in Compile in jclients).toTask(" piano.WebServer").value
 
-//TaskKey[Unit]("jHelloPlay") := (run in Compile in jclients).inputTaskValue
+InputKey[Unit]("jHelloPlay") := (run in Compile in jclients).evaluated
 TaskKey[Unit]("jHelloCassandra") := (runMain in Compile in jclients).toTask(" HelloCassandra").value
 TaskKey[Unit]("jHelloKafka") := (runMain in Compile in jclients).toTask(" HelloKafka").value
 TaskKey[Unit]("jSetupPiano") := (runMain in Compile in jclients).toTask(" piano.CassandraSetup").value

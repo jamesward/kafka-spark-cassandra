@@ -5,10 +5,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import models.PianoSong;
 import play.libs.Json;
-import play.mvc.Controller;
-import play.mvc.LegacyWebSocket;
-import play.mvc.Result;
-import play.mvc.WebSocket;
+import play.mvc.*;
 import services.CassandraHelper;
 import views.html.index;
 
@@ -32,19 +29,12 @@ public class HelloPlay extends Controller {
     public Result songs() {
         List<String> allPianoSongs = cassandraHelper.getAllPianoSongs();
         JsonNode pianoSongJson = Json.toJson(allPianoSongs);
-        pianoSongJson.toString();
-
         return ok(pianoSongJson);
     }
 
     public Result play(String id) {
         Optional<PianoSong> pianoSong = cassandraHelper.getPianoSong(id);
-        if (pianoSong.isPresent()) {
-            return ok(Json.toJson(pianoSong.get()));
-        }
-        else {
-            return notFound();
-        }
+        return pianoSong.map(pianoSong1 -> ok(Json.toJson(pianoSong1))).orElseGet(Results::notFound);
     }
 
     /**
