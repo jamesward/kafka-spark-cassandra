@@ -121,7 +121,7 @@
 
         });
 
-        var ws = new WebSocket('ws://localhost:8080/ws');
+        var ws = new WebSocket('ws://localhost:9000/ws');
 
         piano.on('played-note.piano', function(event, keyCode) {
             if (playingInterval == null) {
