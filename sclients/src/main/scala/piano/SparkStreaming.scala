@@ -25,6 +25,7 @@ object SparkStreaming extends App {
 
   val jobStream = rawKafkaStream.map(KafkaHelper.toPianoSong)
 
+  // When we save key_codes in Cassandra we want to make the column append so it adds new key_codes to the song and not just overwrite the old ones.
   val columnMapping = SomeColumns("song_id", ColumnName("key_codes").append)
   val cassandraWriteConf = WriteConf.fromSparkConf(conf).copy(consistencyLevel = ConsistencyLevel.ONE)
   jobStream.saveToCassandra("demo", "song", columnMapping, cassandraWriteConf)

@@ -1,0 +1,139 @@
+@()
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset=utf-8>
+ <title>HTML5 JavaScript Piano</title>
+
+ <link rel='stylesheet' type='text/css' href='@routes.Assets.versioned("lib/javascript-piano/piano.css")'>
+
+ <style>
+        body {
+            text-align: center;
+        }
+        #piano canvas {
+            display: none;
+        }
+        #recordStop {
+            margin-top: 20px;
+        }
+
+        #recordStop:disabled {
+            background: #dddddd;
+        }
+
+        #songs {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <button id="recordStop">Record 5 Second Song</button>
+    <div>
+       <ul id="songs"></ul>
+    </div>
+    <div id="content">
+       <div id="content-inner">
+           <div id="piano">
+           </div>
+       </div>
+    </div>
+
+    <script src='@routes.Assets.versioned("lib/jquery/jquery.min.js")'></script>
+    <script src='@routes.Assets.versioned("lib/javascript-piano/audio.js")'></script>
+    <script src='@routes.Assets.versioned("lib/javascript-piano/piano.js")'></script>
+
+    <script>
+        var piano = $('#piano');
+
+        var playingInterval = null;
+
+        var playing = [];
+
+        // from: http://stackoverflow.com/a/105074/77409
+        function guid() {
+            function s4() {
+                return Math.floor((1 + Math.random()) * 0x10000)
+                        .toString(16)
+                        .substring(1);
+            }
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                    s4() + '-' + s4() + s4() + s4();
+        }
+
+        function playSong(keyCodes) {
+            playing = keyCodes;
+
+            playingInterval = setInterval(function() {
+                if (playing.length == 0) {
+                    clearInterval(playingInterval);
+                    playingInterval = null;
+                }
+
+                var keyCode = playing.shift();
+                if (keyCode != Number.MAX_SAFE_INTEGER) {
+                    var key = piano.find('[data-key=' + keyCode + ']');
+                    key.mousedown();
+                }
+            }, 100);
+        }
+
+        function getSongs() {
+            $.get('/songs', function(result) {
+                $('#songs').empty();
+                result.forEach(function(songId) {
+                    var a = $('<a>');
+                    a.attr('href', '#');
+                    a.text('Play ' + songId);
+                    a.click(function() {
+                        $.get('/play/' + songId, function(data) {
+                            playSong(data.key_codes);
+                        });
+                    });
+                   $('#songs').append($('<li>').append(a));
+                });
+            });
+        }
+
+        $(function() {
+            getSongs();
+
+            var recordingInterval = null;
+
+            var keyPlayed = null;
+
+            var ticks = null;
+
+            $('#recordStop').click(function() {
+
+                var songId = guid();
+
+                ticks = 0;
+                $('#recordStop').prop('disabled', true);
+
+                recordingInterval = setInterval(function() {
+                    if (ticks >= 50) {
+                        clearInterval(recordingInterval);
+                        getSongs();
+                        $('#recordStop').prop('disabled', false);
+                    }
+                    else {
+                        ticks++;
+                        ws.send(JSON.stringify({songId: songId, keyCode: keyPlayed}));
+                        keyPlayed = null;
+                    }
+                }, 100);
+
+            });
+
+            var ws = new WebSocket('ws://localhost:9000/ws');
+
+            piano.on('played-note.piano', function(event, keyCode) {
+                if (playingInterval == null) {
+                    keyPlayed = keyCode;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

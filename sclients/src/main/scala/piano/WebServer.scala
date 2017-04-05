@@ -16,7 +16,7 @@ object WebServer extends App {
 
   val components = new NettyServerComponents with BuiltInComponents {
 
-    def port() = sys.env.getOrElse("PORT", "8080").toInt
+    def port() = sys.env.getOrElse("PORT", "9000").toInt
 
     def mode() = if (configuration.getString("play.crypto.secret").contains("changeme")) Mode.Dev else Mode.Prod
 
@@ -37,7 +37,6 @@ object WebServer extends App {
           case Some(song) => Results.Ok(Json.toJson(song))
           case _ => Results.NotFound
         }
-
       }
       case GET(p"/ws") => WebSocket.accept[JsValue, JsValue] { _ =>
         val wsSink = kafkaHelper.sink().contramap[JsValue](KafkaHelper.fromJson(KafkaHelper.recordTopic))
