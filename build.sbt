@@ -22,7 +22,7 @@ TaskKey[Unit]("sHelloSpark") := (runMain in Compile in sclients).toTask(" HelloS
 TaskKey[Unit]("sHelloSparkStreaming") := (runMain in Compile in sclients).toTask(" HelloSparkStreaming").value
 TaskKey[Unit]("sSetupPiano") := (runMain in Compile in sclients).toTask(" piano.CassandraSetup").value
 TaskKey[Unit]("sPianoSparkStreaming") := (runMain in Compile in sclients).toTask(" piano.SparkStreaming").value
-TaskKey[Unit]("sStartWebServer") := (runMain in Compile in jclients).toTask(" piano.WebServer").value
+TaskKey[Unit]("sStartWebServer") := (runMain in Compile in sclients).toTask(" piano.WebServer").value
 
 InputKey[Unit]("jHelloPlay") := (run in Compile in jclients).evaluated
 TaskKey[Unit]("jHelloCassandra") := (runMain in Compile in jclients).toTask(" HelloCassandra").value
