@@ -3,3 +3,6 @@
 /project/target/
 /project/project/
 *.DS_Store*
+/*/target/
+/*/project/target/
+/*/project/project/

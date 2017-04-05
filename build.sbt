@@ -1,50 +1,33 @@
 name := "kafka-spark-cassandra"
 
-scalaVersion := "2.11.8"
-
-val kafkaVersion = "0.10.0.1"
-val akkaStreamKafkaVersion = "0.11-RC1"
-val cassandraVersion = "3.7"
-val sparkVersion = "2.0.0"
-val sparkCassandraConnectorVersion = "2.0.0-M1"
-val http4s = "0.14.2a"
-
-libraryDependencies ++= Seq(
-  "org.apache.kafka" %% "kafka" % kafkaVersion,
-  "org.apache.kafka" % "kafka-clients" % kafkaVersion,
-  "com.typesafe.akka" %% "akka-stream-kafka" % akkaStreamKafkaVersion,
-  "org.apache.cassandra" % "cassandra-all" % cassandraVersion,
-  "org.apache.spark" %% "spark-core" % sparkVersion,
-  "org.apache.spark" %% "spark-sql" % sparkVersion,
-  "org.apache.spark" %% "spark-streaming" % sparkVersion,
-  "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion,
-  "com.datastax.spark" %% "spark-cassandra-connector" % sparkCassandraConnectorVersion,
-  "com.typesafe.play" %% "play-netty-server" % "2.5.6" exclude("com.fasterxml.jackson.core", "jackson-databind"),
-  "org.webjars" % "javascript-piano" % "74c90339ad1d55a72a99fe6e33b35752c15d71c7",
-  "org.scalatest"    %% "scalatest"           % "2.2.6" % "test"
+lazy val commonSettings = Seq(
+  scalaVersion := "2.11.8"
 )
 
-excludeDependencies ++= Seq(
-  "ch.qos.logback" % "logback-classic",
-  "org.slf4j" % "log4j-over-slf4j"
-)
+lazy val kafkaServer = (project in file("kafka-server")).settings(commonSettings: _*)
 
-val startKafka = TaskKey[Unit]("start-kafka")
+lazy val cassandraServer = (project in file("cassandra-server")).settings(commonSettings: _*)
 
-startKafka := {
-  (runMain in Compile).toTask(" KafkaServer").value
-}
+lazy val sclients = (project in file("sclients")).settings(commonSettings: _*).enablePlugins(SbtWeb)
 
-val startCassandra = taskKey[Unit]("start-cassandra")
+lazy val jclients = (project in file("jclients")).settings(commonSettings: _*).enablePlugins(PlayJava).disablePlugins(PlayLogback)
 
-startCassandra := {
-  (runMain in Compile).toTask(" CassandraServer").value
-}
+TaskKey[Unit]("startCassandra") := (runMain in Compile in cassandraServer).toTask(" CassandraServer").value
+TaskKey[Unit]("startKafka") := (runMain in Compile in kafkaServer).toTask(" KafkaServer").value
 
-cancelable in Global := true
+TaskKey[Unit]("sHelloCassandra") := (runMain in Compile in sclients).toTask(" HelloCassandra").value
+TaskKey[Unit]("sHelloKafka") := (runMain in Compile in sclients).toTask(" HelloKafka").value
+TaskKey[Unit]("sHelloPlay") := (runMain in Compile in sclients).toTask(" HelloPlay").value
+TaskKey[Unit]("sHelloSpark") := (runMain in Compile in sclients).toTask(" HelloSpark").value
+TaskKey[Unit]("sHelloSparkStreaming") := (runMain in Compile in sclients).toTask(" HelloSparkStreaming").value
+TaskKey[Unit]("sSetupPiano") := (runMain in Compile in sclients).toTask(" piano.CassandraSetup").value
+TaskKey[Unit]("sPianoSparkStreaming") := (runMain in Compile in sclients).toTask(" piano.SparkStreaming").value
+TaskKey[Unit]("sStartWebServer") := (runMain in Compile in sclients).toTask(" piano.WebServer").value
 
-enablePlugins(SbtWeb)
-
-(managedClasspath in Runtime) += (WebKeys.webJarsDirectory in Assets).value
+InputKey[Unit]("jHelloPlay") := (run in Compile in jclients).evaluated
+TaskKey[Unit]("jHelloCassandra") := (runMain in Compile in jclients).toTask(" HelloCassandra").value
+TaskKey[Unit]("jHelloKafka") := (runMain in Compile in jclients).toTask(" HelloKafka").value
+TaskKey[Unit]("jSetupPiano") := (runMain in Compile in jclients).toTask(" piano.CassandraSetup").value
+TaskKey[Unit]("jPianoSparkStreaming") := (runMain in Compile in jclients).toTask(" piano.SparkStreaming").value
 
 enablePlugins(AtomPlugin)

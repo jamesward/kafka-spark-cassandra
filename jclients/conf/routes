@@ -1,0 +1,12 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+GET     /                           controllers.HelloPlay.index
+GET     /piano                      controllers.HelloPlay.piano
+GET     /songs                      controllers.HelloPlay.songs
+GET     /play/:id                   controllers.HelloPlay.play(id)
+GET     /ws                         controllers.HelloPlay.pianoSocket
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

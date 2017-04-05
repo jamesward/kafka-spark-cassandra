@@ -17,6 +17,7 @@ object HelloSparkStreaming extends App {
   val randJobId = Random.nextInt()
 
   val conf = new SparkConf(true).set("spark.cassandra.connection.host", "127.0.0.1")
+  conf.set("spark.sql.warehouse.dir", "spark-warehouse")
   val context = new SparkContext("local", "RandomJob", conf)
   val streamingContext = new StreamingContext(context, Seconds(1))
   val session = SparkSession.builder.config(conf).getOrCreate()
